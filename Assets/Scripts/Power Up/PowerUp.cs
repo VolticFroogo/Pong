@@ -18,7 +18,7 @@ public class PowerUp : NetworkBehaviour
     void Start()
     {
         // Pick our ability skipping over none.
-        Ability = (Abilities)Random.Range(2, Abilities.GetValues(typeof(Abilities)).Length);
+        Ability = (Abilities)Random.Range(1, Abilities.GetValues(typeof(Abilities)).Length);
 
         // Get our sprite renderer.
         var renderer = GetComponent<SpriteRenderer>();
