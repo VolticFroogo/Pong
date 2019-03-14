@@ -8,16 +8,24 @@ public class Paddle : NetworkBehaviour
 
     private Rigidbody2D RB;
 
+    [HideInInspector]
     public Vector2 DefaultScale;
     public Vector2 GrowthScale;
     public Vector2 ShrinkScale;
 
+    [HideInInspector]
     public PowerUp.Abilities AbilitySlot = PowerUp.Abilities.None;
+    [HideInInspector]
     public PowerUp.Abilities ActiveAbility = PowerUp.Abilities.None;
 
+    [HideInInspector]
     public float AbilityEnd;
 
+    [HideInInspector]
     public bool Left;
+
+    [HideInInspector]
+    public bool InvertedControls = false;
 
     void Awake()
     {
@@ -212,6 +220,14 @@ public class Paddle : NetworkBehaviour
     {
         // Get the input from our vertical axis.
         float vertical = Input.GetAxisRaw("Vertical");
+
+        Debug.Log(vertical);
+
+        // If we have inverted controls, invert the vertical axis.
+        if (InvertedControls)
+            vertical = -vertical;
+
+        Debug.Log(InvertedControls);
 
         // Set our X velocity to zero.
         // Set our Y velocity to our vertical axis multiplied by Speed.

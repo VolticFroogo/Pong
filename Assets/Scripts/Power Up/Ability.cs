@@ -22,24 +22,29 @@ public class Ability : MonoBehaviour
             // If we are using the grow power up, call its respective function.
             case PowerUp.Abilities.Grow:
                 if (begin)
-                {
                     Grow.Begin(paddle);
-                    return Grow.Duration;
-                }
+                else
+                    Grow.End(paddle);
 
-                Grow.End(paddle);
-                return 0f;
+                return Grow.Duration;
 
             // If we are using the shrink power up, call its respective function.
             case PowerUp.Abilities.Shrink:
                 if (begin)
-                {
                     Shrink.Begin(paddle);
-                    return Shrink.Duration;
-                }
+                else
+                    Shrink.End(paddle);
 
-                Shrink.End(paddle);
-                return 0f;
+                return Shrink.Duration;
+
+            // If we are using the confusion power up, call its respective function.
+            case PowerUp.Abilities.Confusion:
+                if (begin) 
+                    Confusion.Begin(paddle);
+                else
+                    Confusion.End(paddle);
+
+                return Confusion.Duration;
         }
 
         return 0f;

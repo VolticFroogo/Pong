@@ -90,7 +90,7 @@ public class Ball : NetworkBehaviour
 
         // The power has somehow glitched into being lower than the speed.
         // We'll need to correct for this to prevent the ball from stopping or being too slow.
-        if (power < Speed)
+        if (power < Speed / 3)
         {
             // Calculate the split of power between the X and Y axis.
             var xPowerPercentage = absVelocityX / power;

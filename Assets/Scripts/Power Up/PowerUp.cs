@@ -8,7 +8,8 @@ public class PowerUp : NetworkBehaviour
     {
         None,
         Grow,
-        Shrink
+        Shrink,
+        Confusion
     }
 
     [SyncVar]
