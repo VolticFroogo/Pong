@@ -1,11 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Ability : MonoBehaviour
 {
     public static float Begin(PowerUp.Abilities ability, Paddle paddle, bool isServer)
     {
+        // If they already currently have an active ability, end it.
+        if (paddle.HasActiveAbility())
+            paddle.EndAbility(ability);
+
         return Use(ability, paddle, true, isServer);
     }
 

@@ -89,10 +89,6 @@ public class Paddle : NetworkBehaviour
             return;
         }
 
-        // If they already currently have an active ability, end it.
-        if (HasActiveAbility()) 
-            RpcEndAbility(ActiveAbility); 
-
         // If a player is trying to activate the ability for another client, return.
         // This could be a glitch but is most likely a client with malicious intent.
         if (connectionToClient.playerController.netId != netId)
@@ -141,6 +137,12 @@ public class Paddle : NetworkBehaviour
 
     [ClientRpc]
     private void RpcEndAbility(PowerUp.Abilities ability)
+    {
+        // Call the non-RPC end ability.
+        EndAbility(ability);
+    }
+
+    public void EndAbility(PowerUp.Abilities ability)
     {
         // End the ability.
         Ability.End(ability, this, isServer);
