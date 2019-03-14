@@ -29,6 +29,17 @@ public class Ability : MonoBehaviour
 
                 Grow.End(paddle);
                 return 0f;
+
+            // If we are using the shrink power up, call its respective function.
+            case PowerUp.Abilities.Shrink:
+                if (begin)
+                {
+                    Shrink.Begin(paddle);
+                    return Shrink.Duration;
+                }
+
+                Shrink.End(paddle);
+                return 0f;
         }
 
         return 0f;

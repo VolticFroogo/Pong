@@ -16,10 +16,10 @@ public class Ball : NetworkBehaviour
 
     private List<Vector2> States = new List<Vector2>()
     {
-        new Vector2(-0.5f, -0.5f), // Left and up.
-        new Vector2(-0.5f, 0.5f), // Left and down.
-        new Vector2(0.5f, -0.5f), // Right and up.
-        new Vector2(-0.5f, -0.5f) // Right and down.
+        new Vector2(-0.5f, -0.5f), // Left and down.
+        new Vector2(-0.5f, 0.5f), // Left and up.
+        new Vector2(0.5f, -0.5f), // Right and down.
+        new Vector2(0.5f, 0.5f) // Right and up.
     };
 
     void Awake()

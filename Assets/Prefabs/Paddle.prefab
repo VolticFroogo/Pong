@@ -145,6 +145,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncInterval: 0.1
   Speed: 10
+  DefaultScale: {x: 0, y: 0}
+  GrowthScale: {x: 1, y: 4}
+  ShrinkScale: {x: 0.75, y: 1.5}
+  AbilitySlot: 0
+  ActiveAbility: 0
+  AbilityEnd: 0
+  Left: 0
 --- !u!114 &1283354718141579901
 MonoBehaviour:
   m_ObjectHideFlags: 0

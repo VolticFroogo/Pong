@@ -8,9 +8,9 @@ public class Paddle : NetworkBehaviour
 
     private Rigidbody2D RB;
 
-    public float DefaultScale;
-    public float GrowthScale = 4f;
-    public float ShrinkScale = 1.5f;
+    public Vector2 DefaultScale;
+    public Vector2 GrowthScale;
+    public Vector2 ShrinkScale;
 
     public PowerUp.Abilities AbilitySlot = PowerUp.Abilities.None;
     public PowerUp.Abilities ActiveAbility = PowerUp.Abilities.None;
@@ -34,7 +34,7 @@ public class Paddle : NetworkBehaviour
             RB.position = new Vector2(12.5f, RB.position.y);
 
         // Setup our default scale variable.
-        DefaultScale = transform.localScale.y;
+        DefaultScale = transform.localScale;
     }
 
     void FixedUpdate()
@@ -49,6 +49,11 @@ public class Paddle : NetworkBehaviour
 
     void Update()
     {
+        if (RB.position.x < 0)
+            Left = true;
+        else
+            Left = false;
+
         // If we are controlling this paddle, have an ability, and our player is trying to use it:
         if (isLocalPlayer && HasAbility() && ButtonDown("Ability")) 
             // Tell the server we want to use our ability.
@@ -105,8 +110,6 @@ public class Paddle : NetworkBehaviour
     [ClientRpc]
     private void RpcEndAbility()
     {
-        Debug.Log("End ability!");
-
         // End the ability.
         Ability.End(ActiveAbility, this);
 
@@ -136,28 +139,6 @@ public class Paddle : NetworkBehaviour
     {
         // Set our ability to none.
         ActiveAbility = PowerUp.Abilities.None;
-    }
-
-    private bool ButtonDown(string name)
-    {
-        // If we are pressing our ability button by keyboard, return true.
-        if (Input.GetButtonDown(name))
-            return true;
-
-        // Get the names of all connected controllers.
-        var controllers = Input.GetJoystickNames();
-
-        // If we have no controllers connected, return false.
-        if (controllers.Length < 1)
-            return false;
-
-        // If we are pressing the ability button on a controller, return true.
-        if ((controllers[0].Length == 19 && Input.GetButtonDown(name + " PS"))
-            || (controllers[0].Length == 33 && Input.GetButtonDown(name + " Xbox")))
-            return true;
-
-        // Return false.
-        return false;
     }
 
     #endregion
@@ -207,6 +188,28 @@ public class Paddle : NetworkBehaviour
 
     #endregion
 
+    private bool ButtonDown(string name)
+    {
+        // If we are pressing our ability button by keyboard, return true.
+        if (Input.GetButtonDown(name))
+            return true;
+
+        // Get the names of all connected controllers.
+        var controllers = Input.GetJoystickNames();
+
+        // If we have no controllers connected, return false.
+        if (controllers.Length < 1)
+            return false;
+
+        // If we are pressing the ability button on a controller, return true.
+        if ((controllers[0].Length == 19 && Input.GetButtonDown(name + " PS"))
+            || (controllers[0].Length == 33 && Input.GetButtonDown(name + " Xbox")))
+            return true;
+
+        // Return false.
+        return false;
+    }
+
     private void Movement()
     {
         // Get the input from our vertical axis.
@@ -224,10 +227,15 @@ public class Paddle : NetworkBehaviour
         return Array.Find(paddles, paddle => paddle.netId.Equals(netId));
     }
 
-    public static int AmountOnTeam(bool left)
+    public static Paddle[] FromTeam(bool left)
     {
         var paddles = FindObjectsOfType<Paddle>();
 
-        return Array.FindAll(paddles, paddle => paddle.Left.Equals(left)).Length;
+        return Array.FindAll(paddles, paddle => paddle.Left.Equals(left));
+    }
+
+    public static int AmountOnTeam(bool left)
+    {
+        return FromTeam(left).Length;
     }
 }
