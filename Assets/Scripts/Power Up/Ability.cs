@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class Ability : MonoBehaviour
 {
-    public static float Begin(PowerUp.Abilities ability, Paddle paddle)
+    public static float Begin(PowerUp.Abilities ability, Paddle paddle, bool isServer)
     {
-        return Use(ability, paddle, true);
+        return Use(ability, paddle, true, isServer);
     }
 
-    public static void End(PowerUp.Abilities ability, Paddle paddle)
+    public static void End(PowerUp.Abilities ability, Paddle paddle, bool isServer)
     {
-        Use(ability, paddle, false);
+        Use(ability, paddle, false, isServer);
     }
 
-    private static float Use(PowerUp.Abilities ability, Paddle paddle, bool begin)
+    private static float Use(PowerUp.Abilities ability, Paddle paddle, bool begin, bool isServer)
     {
         // Switch of ability:
         switch (ability)
@@ -45,6 +45,12 @@ public class Ability : MonoBehaviour
                     Confusion.End(paddle);
 
                 return Confusion.Duration;
+
+            case PowerUp.Abilities.Ricochet:
+                if (isServer)
+                    Ricochet.Use();
+
+                return 0f;
         }
 
         return 0f;

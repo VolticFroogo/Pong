@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8465861468657051574}
   - component: {fileID: 1283354718141579901}
   - component: {fileID: 1934622146821841915}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Paddle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -152,6 +152,7 @@ MonoBehaviour:
   ActiveAbility: 0
   AbilityEnd: 0
   Left: 0
+  InvertedControls: 0
 --- !u!114 &1283354718141579901
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -49,10 +49,8 @@ public class Paddle : NetworkBehaviour
     {
         // If this paddle is our local player:
         if (isLocalPlayer)
-        {
             // Handle the movement.
             Movement();
-        }
     }
 
     void Update()
@@ -127,7 +125,13 @@ public class Paddle : NetworkBehaviour
         ResetAbility();
 
         // Use the ability and set its end time.
-        AbilityEnd = Ability.Begin(ActiveAbility, this) + Time.time;
+        var delay = Ability.Begin(ActiveAbility, this, isServer);
+
+        AbilityEnd = Time.time + delay;
+
+        // If we're using a one time use ability, don't try to end it.
+        if (delay == 0f)
+            ResetActiveAbility();
 
         // If this is our paddle using the ability:
         if (isLocalPlayer)
@@ -139,7 +143,7 @@ public class Paddle : NetworkBehaviour
     private void RpcEndAbility(PowerUp.Abilities ability)
     {
         // End the ability.
-        Ability.End(ability, this);
+        Ability.End(ability, this, isServer);
 
         // Reset the active ability of this paddle.
         ResetActiveAbility();
@@ -221,13 +225,9 @@ public class Paddle : NetworkBehaviour
         // Get the input from our vertical axis.
         float vertical = Input.GetAxisRaw("Vertical");
 
-        Debug.Log(vertical);
-
         // If we have inverted controls, invert the vertical axis.
         if (InvertedControls)
             vertical = -vertical;
-
-        Debug.Log(InvertedControls);
 
         // Set our X velocity to zero.
         // Set our Y velocity to our vertical axis multiplied by Speed.

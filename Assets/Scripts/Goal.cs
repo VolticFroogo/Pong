@@ -24,9 +24,9 @@ public class Goal : NetworkBehaviour
 
         // Add a point to the respective side.
         if (Left)
-            left++;
-        else
             right++;
+        else
+            left++;
 
         // Call set score on all clients.
         Score.Instance.RpcSet(left, right);

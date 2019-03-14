@@ -9,7 +9,8 @@ public class PowerUp : NetworkBehaviour
         None,
         Grow,
         Shrink,
-        Confusion
+        Confusion,
+        Ricochet
     }
 
     [SyncVar]

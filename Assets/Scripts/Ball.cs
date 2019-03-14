@@ -10,9 +10,11 @@ public class Ball : NetworkBehaviour
 
     private AudioSource Audio;
 
-    private Rigidbody2D RB;
+    public Rigidbody2D RB;
 
     private uint LastHit;
+
+    public static Ball Instance;
 
     private List<Vector2> States = new List<Vector2>()
     {
@@ -27,6 +29,8 @@ public class Ball : NetworkBehaviour
         // Initialise variables.
         RB = GetComponent<Rigidbody2D>();
         Audio = GetComponent<AudioSource>();
+
+        Instance = this;
 
         // Set the audio player clip to our hit sound.
         Audio.clip = HitSound;

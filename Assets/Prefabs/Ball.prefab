@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 2699452306375452873}
   - component: {fileID: 79564695}
   - component: {fileID: 1092910696}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Ball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -147,7 +147,7 @@ MonoBehaviour:
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
   m_AssetId: 
-  m_SceneId: 8731069
+  m_SceneId: 4854551
 --- !u!114 &2699452306375452873
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,7 +177,6 @@ MonoBehaviour:
   syncInterval: 0.1
   Speed: 30
   HitSound: {fileID: 8300000, guid: 9f905bf6e0d747845bac59ef01603662, type: 3}
-  LastHit: 0
 --- !u!82 &1092910696
 AudioSource:
   m_ObjectHideFlags: 0

@@ -399,7 +399,7 @@ MonoBehaviour:
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
   m_AssetId: 
-  m_SceneId: 256224
+  m_SceneId: 12759626
 --- !u!1 &792106714
 GameObject:
   m_ObjectHideFlags: 0
@@ -762,8 +762,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7538483118693977544, guid: 3af4e3a4aeb38ff42be435e909b96043,
         type: 3}
+      propertyPath: m_AssetId
+      value: 3af4e3a4aeb38ff42be435e909b96043
+      objectReference: {fileID: 0}
+    - target: {fileID: 7538483118693977544, guid: 3af4e3a4aeb38ff42be435e909b96043,
+        type: 3}
       propertyPath: m_SceneId
       value: 12573481
+      objectReference: {fileID: 0}
+    - target: {fileID: 7538483119977650078, guid: 3af4e3a4aeb38ff42be435e909b96043,
+        type: 3}
+      propertyPath: m_AssetId
+      value: 3af4e3a4aeb38ff42be435e909b96043
       objectReference: {fileID: 0}
     - target: {fileID: 7538483119977650078, guid: 3af4e3a4aeb38ff42be435e909b96043,
         type: 3}
