@@ -147,7 +147,7 @@ MonoBehaviour:
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
   m_AssetId: 
-  m_SceneId: 12948907
+  m_SceneId: 8731069
 --- !u!114 &2699452306375452873
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,6 +177,7 @@ MonoBehaviour:
   syncInterval: 0.1
   Speed: 30
   HitSound: {fileID: 8300000, guid: 9f905bf6e0d747845bac59ef01603662, type: 3}
+  LastHit: 0
 --- !u!82 &1092910696
 AudioSource:
   m_ObjectHideFlags: 0

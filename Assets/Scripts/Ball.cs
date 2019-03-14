@@ -12,6 +12,8 @@ public class Ball : NetworkBehaviour
 
     private Rigidbody2D RB;
 
+    private uint LastHit;
+
     private List<Vector2> States = new List<Vector2>()
     {
         new Vector2(-0.5f, -0.5f), // Left and up.
@@ -37,6 +39,8 @@ public class Ball : NetworkBehaviour
 
         // Reset the ball.
         Reset();
+
+        PowerUpSpawner.Instance.Begin();
     }
 
     public void Update()
@@ -81,6 +85,9 @@ public class Ball : NetworkBehaviour
         // If we collided with a paddle:
         if (paddle)
         {
+            // Set last hit to the paddle we just collided with.
+            LastHit = paddle.netId;
+
             // Calculate the width of the paddle.
             var xOff = col.collider.bounds.size.x / 2;
 
@@ -128,6 +135,29 @@ public class Ball : NetworkBehaviour
 
             // Set new velocity.
             RB.velocity = new Vector2(xPowerRounded, yPowerRounded);
+        }
+    }
+
+    [ServerCallback] // Only run on server.
+    void OnTriggerEnter2D(Collider2D col)
+    {
+        // Get the power up component (if it exists).
+        var powerUp = col.gameObject.GetComponent<PowerUp>();
+
+        // If we collided with a power up:
+        if (powerUp)
+        {
+            // Tell our spawner that the power up was destroyed.
+            PowerUpSpawner.Instance.Destroyed();
+
+            // Tell our server somebody hit the power up.
+            powerUp.Hit(LastHit);
+
+            // Tell all clients somebody hit the power up.
+            powerUp.RpcHit(LastHit);
+
+            // Destroy the power up on all clients.
+            NetworkServer.Destroy(col.gameObject);
         }
     }
 }

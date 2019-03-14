@@ -7,14 +7,25 @@ public class Score : NetworkBehaviour
     public int Right = 0;
     public Text text;
 
+    // Singleton.
+    public static Score Instance;
+
+    void Awake()
+    {
+        // Initialise our variables.
+        Instance = this;
+    }
+
     void OnGUI()
     {
         // Set the text.
         text.text = Left + " - " + Right;
     }
 
-    public void Set(int left, int right)
+    [ClientRpc] // Server --> Client
+    public void RpcSet(int left, int right)
     {
+        // Update the score to whatever the server tells us.
         Left = left;
         Right = right;
     }
