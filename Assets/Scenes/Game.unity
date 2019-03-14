@@ -399,7 +399,7 @@ MonoBehaviour:
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
   m_AssetId: 
-  m_SceneId: 12124029
+  m_SceneId: 14000428
 --- !u!1 &792106714
 GameObject:
   m_ObjectHideFlags: 0
@@ -839,5 +839,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8923767433887326604, guid: caee72bf6c66ecc4bbb9d031f921a4e2,
+        type: 3}
+      propertyPath: spawnPrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 1532407498065543400, guid: 6197264515df9e143956616f4a27964a,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: caee72bf6c66ecc4bbb9d031f921a4e2, type: 3}
