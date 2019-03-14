@@ -74,6 +74,41 @@ public class Ball : NetworkBehaviour
     }
 
     [ServerCallback] // Only run on server.
+    void FixedUpdate()
+    {
+        MinimumSpeed();
+    }
+
+    private void MinimumSpeed()
+    {
+        // Convert velocity to absolute.
+        var absVelocityX = Mathf.Abs(RB.velocity.x);
+        var absVelocityY = Mathf.Abs(RB.velocity.y);
+
+        // Calculate power from absolute velocity.
+        var power = absVelocityX + absVelocityY;
+
+        // The power has somehow glitched into being lower than the speed.
+        // We'll need to correct for this to prevent the ball from stopping or being too slow.
+        if (power < Speed)
+        {
+            // Calculate the split of power between the X and Y axis.
+            var xPowerPercentage = absVelocityX / power;
+            var yPowerPercentage = absVelocityY / power;
+
+            // Calculate what the power should be from these percentages.
+            var xPower = xPowerPercentage * Speed;
+            var yPower = yPowerPercentage * Speed;
+
+            // Calculate the new velocity from this power.
+            var velocity = new Vector2(xPower, yPower);
+
+            // Set the new velocity.
+            RB.velocity = velocity;
+        }
+    }
+
+    [ServerCallback] // Only run on server.
     void OnCollisionEnter2D(Collision2D col)
     {
         // Tell all clients to play hit sound.

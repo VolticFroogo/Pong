@@ -83,6 +83,10 @@ public class Paddle : NetworkBehaviour
             return;
         }
 
+        // If they already currently have an active ability, end it.
+        if (HasActiveAbility()) 
+            RpcEndAbility(ActiveAbility); 
+
         // If a player is trying to activate the ability for another client, return.
         // This could be a glitch but is most likely a client with malicious intent.
         if (connectionToClient.playerController.netId != netId)
