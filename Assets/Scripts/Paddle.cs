@@ -55,19 +55,19 @@ public class Paddle : NetworkBehaviour
             Left = false;
 
         // If we are controlling this paddle, have an ability, and our player is trying to use it:
-        if (isLocalPlayer && HasAbility() && ButtonDown("Ability")) 
+        if (isLocalPlayer && HasAbility() && GetInput.ButtonDown("Ability")) 
             // Tell the server we want to use our ability.
             CmdUseAbility();
 
         // If we are controlling this paddle, have an ability, and our player is trying to use it:
-        if (isLocalPlayer && ButtonDown("Switch Team"))
+        if (isLocalPlayer && GetInput.ButtonDown("Switch Team"))
             // Tell the server we want to switch team.
             CmdSwitchTeam();
 
         // If we are the server, the paddle has an active ability, and the ability should end:
         if (isServer && HasActiveAbility() && Time.time > AbilityEnd)
             // Tell all clients we should end the ability.
-            RpcEndAbility();
+            RpcEndAbility(ActiveAbility);
     }
 
     #region Ability
@@ -76,9 +76,12 @@ public class Paddle : NetworkBehaviour
     private void CmdUseAbility()
     {
         // If according to us (server) the paddle (client) doesn't have any ability.
-        // This could be because of lag or a malicious client; just ignore them.
+        // This could be because of lag or a malicious client; tell them they have no ability.
         if (!HasAbility())
+        {
+            TargetNoAbility(connectionToClient);
             return;
+        }
 
         // If a player is trying to activate the ability for another client, return.
         // This could be a glitch but is most likely a client with malicious intent.
@@ -86,14 +89,27 @@ public class Paddle : NetworkBehaviour
             return;
 
         // Tell all clients that this paddle is using their ability.
-        RpcUseAbility();
+        RpcUseAbility(AbilitySlot);
+    }
+
+    [TargetRpc]
+    private void TargetNoAbility(NetworkConnection connection)
+    {
+        // This will be called if a client thinks they have a power up but the server disagrees.
+        // This will mainly happen because of lag so we will update the UI and ability.
+
+        // Reset the ability.
+        ResetAbility();
+
+        // Tell our UI to reset our ability.
+        PowerUpUI.Instance.Reset();
     }
 
     [ClientRpc]
-    private void RpcUseAbility()
+    private void RpcUseAbility(PowerUp.Abilities ability)
     {
         // Set the active ability to our ability.
-        ActiveAbility = AbilitySlot;
+        ActiveAbility = ability;
 
         // Reset the ability of this paddle.
         ResetAbility();
@@ -108,10 +124,10 @@ public class Paddle : NetworkBehaviour
     }
 
     [ClientRpc]
-    private void RpcEndAbility()
+    private void RpcEndAbility(PowerUp.Abilities ability)
     {
         // End the ability.
-        Ability.End(ActiveAbility, this);
+        Ability.End(ability, this);
 
         // Reset the active ability of this paddle.
         ResetActiveAbility();
@@ -187,28 +203,6 @@ public class Paddle : NetworkBehaviour
     }
 
     #endregion
-
-    private bool ButtonDown(string name)
-    {
-        // If we are pressing our ability button by keyboard, return true.
-        if (Input.GetButtonDown(name))
-            return true;
-
-        // Get the names of all connected controllers.
-        var controllers = Input.GetJoystickNames();
-
-        // If we have no controllers connected, return false.
-        if (controllers.Length < 1)
-            return false;
-
-        // If we are pressing the ability button on a controller, return true.
-        if ((controllers[0].Length == 19 && Input.GetButtonDown(name + " PS"))
-            || (controllers[0].Length == 33 && Input.GetButtonDown(name + " Xbox")))
-            return true;
-
-        // Return false.
-        return false;
-    }
 
     private void Movement()
     {

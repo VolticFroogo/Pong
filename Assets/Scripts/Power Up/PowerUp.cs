@@ -11,20 +11,39 @@ public class PowerUp : NetworkBehaviour
         Shrink
     }
 
+    [SyncVar]
     private Abilities Ability;
-    
+
+    private Abilities CurrentSprite;
+
+    public SpriteRenderer Renderer;
+
     public List<Sprite> Sprites;
+
+    void Awake()
+    {
+        // Get our sprite renderer.
+        Renderer = GetComponent<SpriteRenderer>();
+    }
 
     void Start()
     {
-        // Pick our ability skipping over none.
-        Ability = (Abilities)Random.Range(1, Abilities.GetValues(typeof(Abilities)).Length);
+        if (isServer)
+            // Pick our ability skipping over none.
+            Ability = (Abilities)Random.Range(1, Abilities.GetValues(typeof(Abilities)).Length);
+    }
 
-        // Get our sprite renderer.
-        var renderer = GetComponent<SpriteRenderer>();
+    void Update()
+    {
+        // If the sprite isn't set yet:
+        if (CurrentSprite != Ability)
+        {
+            // Set our sprite corresponding to the ability we have.
+            Renderer.sprite = Sprites[(int)Ability - 1];
 
-        // Set our sprite corresponding to the ability we have.
-        renderer.sprite = Sprites[(int)Ability - 1];
+            // Set our current sprite variable to our ability.
+            CurrentSprite = Ability;
+        }
     }
 
     [ClientRpc] // Server --> Client

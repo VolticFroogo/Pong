@@ -29,4 +29,14 @@ public class Score : NetworkBehaviour
         Left = left;
         Right = right;
     }
+
+    [ServerCallback] // Only run on server.
+    void Update()
+    {
+        if (GetInput.ButtonDown("Reset"))
+        {
+            Left = 0;
+            Right = 0;
+        }
+    }
 }
