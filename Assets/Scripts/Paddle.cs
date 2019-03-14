@@ -17,6 +17,8 @@ public class Paddle : NetworkBehaviour
 
     public float AbilityEnd;
 
+    public bool Left;
+
     void Awake()
     {
         // Initialise variables.
@@ -48,9 +50,14 @@ public class Paddle : NetworkBehaviour
     void Update()
     {
         // If we are controlling this paddle, have an ability, and our player is trying to use it:
-        if (isLocalPlayer && HasAbility() && UseAbilityDown()) 
+        if (isLocalPlayer && HasAbility() && ButtonDown("Ability")) 
             // Tell the server we want to use our ability.
             CmdUseAbility();
+
+        // If we are controlling this paddle, have an ability, and our player is trying to use it:
+        if (isLocalPlayer && ButtonDown("Switch Team"))
+            // Tell the server we want to switch team.
+            CmdSwitchTeam();
 
         // If we are the server, the paddle has an active ability, and the ability should end:
         if (isServer && HasActiveAbility() && Time.time > AbilityEnd)
@@ -131,10 +138,10 @@ public class Paddle : NetworkBehaviour
         ActiveAbility = PowerUp.Abilities.None;
     }
 
-    private bool UseAbilityDown()
+    private bool ButtonDown(string name)
     {
         // If we are pressing our ability button by keyboard, return true.
-        if (Input.GetButtonDown("Ability"))
+        if (Input.GetButtonDown(name))
             return true;
 
         // Get the names of all connected controllers.
@@ -145,12 +152,57 @@ public class Paddle : NetworkBehaviour
             return false;
 
         // If we are pressing the ability button on a controller, return true.
-        if ((controllers[0].Length == 19 && Input.GetButtonDown("Ability PS"))
-            || (controllers[0].Length == 33 && Input.GetButtonDown("Ability Xbox")))
+        if ((controllers[0].Length == 19 && Input.GetButtonDown(name + " PS"))
+            || (controllers[0].Length == 33 && Input.GetButtonDown(name + " Xbox")))
             return true;
 
         // Return false.
         return false;
+    }
+
+    #endregion
+
+    #region Team
+
+    [Command]
+    private void CmdSwitchTeam()
+    {
+        // If a player is trying to switch team for another client, return.
+        // This could be a glitch but is most likely a client with malicious intent.
+        if (connectionToClient.playerController.netId != netId)
+            return;
+
+        // If the team that they are trying to join is full.
+        if (AmountOnTeam(!Left) >= 2)
+        {
+            // Tell the client that the team is full and return.
+            TargetTeamFull(connectionToClient);
+            return;
+        }
+
+        // Tell all clients that this paddle is switching teams.
+        RpcSwitchTeam();
+    }
+
+    [TargetRpc]
+    private void TargetTeamFull(NetworkConnection connection)
+    {
+        // TODO: tell the client the team they tried to join is full.
+        Debug.Log("Team full!");
+    }
+
+    [ClientRpc]
+    private void RpcSwitchTeam()
+    {
+        // Invert the left boolean.
+        Left = !Left;
+
+        // Get the coordinates of the new position.
+        var x = Left ? -12.5f : 12.5f;
+        var y = transform.position.y;
+
+        // Update the position.
+        transform.position = new Vector2(x, y);
     }
 
     #endregion
@@ -170,5 +222,12 @@ public class Paddle : NetworkBehaviour
         var paddles = FindObjectsOfType<Paddle>();
 
         return Array.Find(paddles, paddle => paddle.netId.Equals(netId));
+    }
+
+    public static int AmountOnTeam(bool left)
+    {
+        var paddles = FindObjectsOfType<Paddle>();
+
+        return Array.FindAll(paddles, paddle => paddle.Left.Equals(left)).Length;
     }
 }

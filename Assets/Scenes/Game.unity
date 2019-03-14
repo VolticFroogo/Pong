@@ -125,7 +125,7 @@ GameObject:
   - component: {fileID: 75038810}
   - component: {fileID: 75038808}
   m_Layer: 5
-  m_Name: Power Up UI
+  m_Name: Power Up
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
