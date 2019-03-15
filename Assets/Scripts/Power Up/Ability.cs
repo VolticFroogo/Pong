@@ -6,7 +6,7 @@ public class Ability : MonoBehaviour
     {
         // If they already currently have an active ability, end it.
         if (paddle.HasActiveAbility())
-            paddle.EndAbility(ability);
+            paddle.EndAbility(paddle.ActiveAbility);
 
         return Use(ability, paddle, true, isServer);
     }
@@ -48,8 +48,10 @@ public class Ability : MonoBehaviour
 
                 return Confusion.Duration;
 
+            // As ricochet is one time use, return zero as the duration and only use on begin.
             case PowerUp.Abilities.Ricochet:
-                if (isServer)
+                // Only run on server as this is change to the ball's velocity which the server controls.
+                if (isServer && begin)
                     Ricochet.Use();
 
                 return 0f;

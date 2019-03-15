@@ -16,6 +16,11 @@ public class Ball : NetworkBehaviour
 
     public static Ball Instance;
 
+    [HideInInspector]
+    public Vector2 DefaultSize;
+    public Vector2 GrowSize;
+    public Vector2 ShrinkSize;
+
     private List<Vector2> States = new List<Vector2>()
     {
         new Vector2(-0.5f, -0.5f), // Left and down.
@@ -36,6 +41,11 @@ public class Ball : NetworkBehaviour
         Audio.clip = HitSound;
     }
 
+    void Start()
+    {
+        DefaultSize = transform.localScale;
+    }
+
     public override void OnStartServer()
     {
         // Set the ball to simulated.
@@ -45,6 +55,8 @@ public class Ball : NetworkBehaviour
         Reset();
 
         PowerUpSpawner.Instance.Begin();
+
+        EventSpawner.Instance.Begin();
     }
 
     public void Update()
@@ -197,6 +209,26 @@ public class Ball : NetworkBehaviour
 
             // Destroy the power up on all clients.
             NetworkServer.Destroy(col.gameObject);
+
+            return;
+        }
+
+        // Get the event component (if it exists).
+        var eventT = col.gameObject.GetComponent<EventT>();
+
+        // If we collided with an event:
+        if (eventT)
+        {
+            // Tell our spawner that the event was destroyed.
+            EventSpawner.Instance.Destroyed();
+
+            // Tell our server somebody hit the event.
+            eventT.Hit();
+
+            // Destroy the event on all clients.
+            NetworkServer.Destroy(col.gameObject);
+
+            return;
         }
     }
 }

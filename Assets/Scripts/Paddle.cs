@@ -114,14 +114,14 @@ public class Paddle : NetworkBehaviour
     [ClientRpc]
     private void RpcUseAbility(PowerUp.Abilities ability)
     {
+        // Use the ability and set its end time.
+        var delay = Ability.Begin(ability, this, isServer);
+
         // Set the active ability to our ability.
         ActiveAbility = ability;
 
         // Reset the ability of this paddle.
         ResetAbility();
-
-        // Use the ability and set its end time.
-        var delay = Ability.Begin(ActiveAbility, this, isServer);
 
         AbilityEnd = Time.time + delay;
 

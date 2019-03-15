@@ -18,6 +18,7 @@ public class PowerUp : NetworkBehaviour
 
     private Abilities CurrentSprite;
 
+    [HideInInspector]
     public SpriteRenderer Renderer;
 
     public List<Sprite> Sprites;
