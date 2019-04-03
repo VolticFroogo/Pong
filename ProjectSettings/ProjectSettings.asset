@@ -118,7 +118,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 0.4.2
+  bundleVersion: 0.6.1
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -496,7 +496,7 @@ PlayerSettings:
   webGLLinkerTarget: 1
   webGLThreadsSupport: 0
   scriptingDefineSymbols:
-    1: MIRROR;MIRROR_1726_OR_NEWER
+    1: MIRROR;MIRROR_1726_OR_NEWER;NOBLE_PUNCHTHROUGH
   platformArchitecture: {}
   scriptingBackend: {}
   il2cppCompilerConfiguration: {}

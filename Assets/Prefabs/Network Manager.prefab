@@ -10,7 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8923767433887326607}
   - component: {fileID: 8923767433887326604}
-  - component: {fileID: 8923767433887326605}
+  - component: {fileID: 8923767432891398702}
+  - component: {fileID: 8923767432891398701}
   - component: {fileID: 8923767433887326606}
   m_Layer: 0
   m_Name: Network Manager
@@ -48,11 +49,11 @@ MonoBehaviour:
   dontDestroyOnLoad: 1
   runInBackground: 1
   startOnHeadless: 1
-  serverTickRate: 60
+  serverTickRate: 50
   showDebugMessages: 0
   offlineScene: 
   onlineScene: 
-  transport: {fileID: 8923767433887326605}
+  transport: {fileID: 8923767432891398702}
   networkAddress: localhost
   maxConnections: 4
   playerPrefab: {fileID: 1978694845055292248, guid: fa77c15439aad804d90d219538af6cc5,
@@ -62,7 +63,7 @@ MonoBehaviour:
   spawnPrefabs:
   - {fileID: 1532407498065543400, guid: 6197264515df9e143956616f4a27964a, type: 3}
   - {fileID: 6567997284355593735, guid: 3fb1bf86e041b8241b98f19587bf5b6a, type: 3}
---- !u!114 &8923767433887326605
+--- !u!114 &8923767432891398702
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -71,7 +72,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8923767433887326600}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7424c1070fad4ba2a7a96b02fbeb4bb, type: 3}
+  m_Script: {fileID: 11500000, guid: 7d79bbf2858994b48a599a16f539010c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   OnClientConnected:
@@ -112,9 +113,18 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: Mirror.UnityEventInt, Mirror, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  port: 32729
-  NoDelay: 1
---- !u!114 &8923767433887326606
+  m_ChannelDefinitions: 0000000001000000
+  m_TransportVerbosity: 1
+  m_UseNewPacketEngine: 1
+  m_UseLZ4Compression: 1
+  m_BindToAllInterfaces: 1
+  m_BindToAddress: 127.0.0.1
+  m_Port: 32729
+  m_UseCustomTimeout: 0
+  m_BasePeerTimeout: 5000
+  m_BasePeerMultiplier: 3
+  m_MaximumTotalConnections: 4
+--- !u!114 &8923767432891398701
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -122,6 +132,25 @@ MonoBehaviour:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8923767433887326600}
   m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37afeeb819710974c8a8f14432ef0d4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Show: 1
+  Width: 200
+  Height: 600
+  Hostname: pong.froogo.co.uk
+  Port: 32729
+  SendDelay: 5
+  AttemptTimeout: 10
+--- !u!114 &8923767433887326606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8923767433887326600}
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6442dc8070ceb41f094e44de0bf87274, type: 3}
   m_Name: 
